@@ -47,7 +47,7 @@ iDom è un hub personale nativo per iPhone, scritto in SwiftUI. I dati dei quatt
 | PC Remote | Alimentazione Windows: richiede componente e Tailscale; accensione con ponte Wake-on-LAN |
 | Rete | In sviluppo |
 
-Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico richiederà un backend e un provider/API autorizzato.
+Messaggi e Rete non sono stati estesi nella 0.4.0. Per Messaggi il requisito confermato è usare l’account WhatsApp personale, con invio automatico all’orario scelto anche con iDom chiusa; WhatsApp Business e il semplice promemoria con conferma manuale non soddisfano la richiesta. Questa funzione non è implementata. Prima di scegliere l’integrazione va verificata sul telefono l’azione WhatsApp di Comandi Rapidi, inclusa l’esecuzione a schermo bloccato: un’automazione oraria di iOS non garantisce da sola l’invio da parte di WhatsApp, né la programmazione dinamica da iDom. [Automazioni Apple](https://support.apple.com/it-it/guide/shortcuts/apd602971e63/ios).
 
 ## PC Remote · novità 0.4.0
 
@@ -70,7 +70,7 @@ Verifica finale dell’app: **4 test UI superati**, compreso il ciclo completo d
 
 La prima esecuzione UI della 0.4.0 ha superato i tre test degli strumenti precedenti ma ha rilevato l’accesso negato al portachiavi nella build del simulatore senza firma. La build 6 abilita la firma ad-hoc dei test, distingue l’errore di installazione dal telefono bloccato e aggiunge la prova di salvataggio, riapertura e rimozione delle credenziali sintetiche.
 
-Prova hardware del 5 settembre 2026: l’utente ha confermato l’accensione del PC dopo Arresta il sistema di Windows, ricevendo un Magic Packet sulla LAN. Hardware: ASUS ROG STRIX B650-A GAMING WIFI e Intel Ethernet Controller I226-V; configurazione e limiti della prova sono documentati in [Companion/README.md](Companion/README.md#prova-hardware-locale). Il Mac è stato usato soltanto come mittente temporaneo. Restano da verificare collegamento del componente Windows a iDom, spegnimento dall’app e accensione da rete mobile senza Mac sempre acceso.
+Prova hardware del 5 settembre 2026: l’utente ha confermato l’accensione del PC dopo Arresta il sistema di Windows, ricevendo un Magic Packet sulla LAN. Hardware: ASUS ROG STRIX B650-A GAMING WIFI e Intel Ethernet Controller I226-V; configurazione e limiti della prova sono documentati in [Companion/README.md](Companion/README.md#prova-hardware-locale). Il Mac è stato usato soltanto come mittente temporaneo. Successivamente l’utente ha installato il componente Windows, attivato Tailscale Serve e confermato che il collegamento a iDom funziona. Restano da verificare lo spegnimento dall’app e l’accensione da rete mobile senza Mac sempre acceso.
 
 ## Dati e compatibilità
 - iOS 17 o successivo; interfaccia per iPhone.

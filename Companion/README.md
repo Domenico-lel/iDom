@@ -25,7 +25,7 @@ Configurazione effettuata con conferma dell’utente:
 - Driver Intel: Attiva su pacchetto Magic e Attiva su pacchetto Magic dall’S5 abilitati; Pattern Match disabilitato. Procedura di risparmio energia con risveglio consentito solo tramite Magic Packet.
 - Avvio rapido di Windows disabilitato; Ethernet e alimentazione rimaste collegate.
 
-Le impostazioni BIOS/Windows sono state applicate dall’utente, non lette automaticamente. La prova dimostra un’accensione locale dopo arresto, non l’affidabilità dopo lunghe attese, interruzioni di corrente o attraverso Internet. Restano da provare installazione e collegamento del componente, spegnimento dall’app e recapito del risveglio attraverso il router senza Mac sempre acceso.
+Le impostazioni BIOS/Windows sono state applicate dall’utente, non lette automaticamente. La prova dimostra un’accensione locale dopo arresto, non l’affidabilità dopo lunghe attese, interruzioni di corrente o attraverso Internet. Successivamente l’utente ha installato il componente, attivato Tailscale Serve e confermato il funzionamento del collegamento a iDom. Spegnimento dall’app e recapito del risveglio attraverso il router senza Mac sempre acceso non sono ancora stati provati.
 
 Riferimenti: [specifiche ASUS con WOL by PME](https://rog.asus.com/motherboards/rog-strix/rog-strix-b650-a-gaming-wifi-model/spec/), [configurazione ASUS](https://www.asus.com/uk/support/faq/1045950/), [risveglio Intel](https://www.intel.com/content/www/us/en/support/articles/000005793/ethernet-products.html).
 
