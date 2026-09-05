@@ -43,11 +43,25 @@ iDom è un hub personale nativo per iPhone, scritto in SwiftUI. I dati dei quatt
 ## Altri moduli
 | Modulo | Stato |
 | --- | --- |
-| Messaggi WhatsApp | Beta: salva solo la programmazione, senza invio automatico né promemoria WhatsApp |
+| Messaggi WhatsApp | Beta: invio automatico dal proprio PC Windows, richiede componente e collegamento QR |
 | PC Remote | Alimentazione Windows: richiede componente e Tailscale; accensione con ponte Wake-on-LAN |
 | Rete | In sviluppo |
 
-Messaggi e Rete non sono stati estesi nella 0.4.0. Per Messaggi il requisito confermato è usare l’account WhatsApp personale, con invio automatico all’orario scelto anche con iDom chiusa; WhatsApp Business e il semplice promemoria con conferma manuale non soddisfano la richiesta. Questa funzione non è implementata. Prima di scegliere l’integrazione va verificata sul telefono l’azione WhatsApp di Comandi Rapidi, inclusa l’esecuzione a schermo bloccato: un’automazione oraria di iOS non garantisce da sola l’invio da parte di WhatsApp, né la programmazione dinamica da iDom. [Automazioni Apple](https://support.apple.com/it-it/guide/shortcuts/apd602971e63/ios).
+## WhatsApp · novità 0.5.0 (build 7)
+
+La sezione Messaggi programma messaggi di testo individuali tramite **il proprio PC Windows**, mantenendo l’account WhatsApp personale. Il requisito confermato è l’invio anche con iDom chiusa, senza WhatsApp Business né sessioni su server di terzi. L’utente ha accettato il requisito del PC acceso negli orari degli invii e il carattere non ufficiale della soluzione. Il componente usa whatsapp-web.js con sessione locale, dietro Tailscale Serve sulla porta **8444**; PC Remote resta sulla 8443 con credenziali separate.
+
+- Nuovo collegamento verificato con chiave nel portachiavi, numero internazionale, testo e data/ora; conferma esplicita prima di programmare. La coda risiede sul PC e continua con iDom chiusa. PC acceso, connesso e utente entrato in Windows; il blocco schermo è compatibile, la sospensione no.
+- Annullamento prima dell’inizio dell’invio; stati distinti per programmazione, invio affidato a WhatsApp, consegna/lettura, mancato invio ed esito incerto. Nessun retry automatico dei tentativi ambigui. Le richieste duplicate riutilizzano un identificativo persistente.
+- Tolleranza di indisponibilità di 5 minuti: oltre la scadenza il messaggio viene segnato non inviato. Nessuna accensione automatica del PC e nessuna modifica alle impostazioni energetiche.
+- Vecchie bozze conservate nello stesso archivio, senza invii automatici; per usarle occorre un nuovo orario e una nuova conferma. Gli archivi non leggibili non vengono sovrascritti.
+- Installer per utente interattivo con browser a privilegi limitati e sandbox attiva. Dipendenze bloccate nel lockfile; pacchetto Windows con Node incluso. Sessione e coda nella cartella privata dell’utente, non negli artefatti o nel repository.
+- Automazione **non ufficiale**, soggetta a cambiamenti di WhatsApp e rischio di blocco dell’account. Nessuna garanzia di consegna all’istante o esattamente una volta.
+
+**[Installazione, limiti, dati e test: WhatsAppBridge/README.md](WhatsAppBridge/README.md)**. Rete resta in sviluppo. La precedente prova Comandi Rapidi ha soltanto aperto la chat col testo pronto: non viene usata come invio automatico.
+
+Verifica locale della 0.5.0: **10 test del componente** con adapter fittizio e HTTP locale, **28 controlli Swift** su configurazione, numeri, date e bozze precedenti e **build iOS Simulator riuscita**. Build firmata, verifiche UI e pacchetto Windows in verifica. Il primo invio reale richiede ancora il QR dell’utente sul PC e un messaggio di prova al proprio numero. Non è stato inviato alcun messaggio reale dagli strumenti di sviluppo.
+
 
 ## PC Remote · novità 0.4.0
 

@@ -53,6 +53,29 @@ final class PersonalToolsUITests: XCTestCase {
         app.alerts.buttons["Rimuovi"].tap()
         XCTAssertTrue(app.buttons["pc.configure"].waitForExistence(timeout: 5))
     }
+    func testWhatsAppRequiresItsOwnConnection() {
+        openTool("Messaggi")
+        app.swipeUp()
+        let connect = app.buttons["whatsapp.configure"]
+        if !connect.isHittable { app.swipeDown() }
+        XCTAssertTrue(connect.waitForExistence(timeout: 10))
+        connect.tap()
+        XCTAssertFalse(app.buttons["Salva"].isEnabled)
+        let address = app.textFields["whatsapp.address"]
+        address.tap()
+        address.typeText("http://127.0.0.1:47322")
+        let key = app.secureTextFields["whatsapp.token"]
+        key.tap()
+        key.typeText(String(repeating: "a", count: 64))
+        XCTAssertFalse(app.buttons["Salva"].isEnabled)
+        capture("WhatsApp · collegamento separato")
+        app.buttons["Annulla"].tap()
+        XCTAssertFalse(app.buttons["whatsapp.new"].exists)
+        app.swipeUp()
+        app.buttons["Bozze locali delle versioni precedenti"].tap()
+        XCTAssertTrue(app.staticTexts["Nessuna bozza locale."].waitForExistence(timeout: 5))
+        app.buttons["Chiudi"].tap()
+    }
     func testQuickCopyPersistsEditsAndDeletes() {
         openTool("Quick Copy")
         app.buttons["Aggiungi testo"].tap()

@@ -12,3 +12,10 @@ Companion/tests/__pycache__/
 Companion/build/
 Companion/dist/
 Companion/*.spec
+
+# WhatsApp session and local build artifacts
+WhatsAppBridge/node_modules/
+WhatsAppBridge/data/
+WhatsAppBridge/package/
+WhatsAppBridge/.wwebjs_auth/
+WhatsAppBridge/.wwebjs_cache/

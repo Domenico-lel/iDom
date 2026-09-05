@@ -16,6 +16,6 @@ enum ModuleCatalog {
         .init(id: "parking", title: "Parcheggio", subtitle: "Ritrova la tua auto", symbol: "car.fill", tint: .orange),
         .init(id: "deadlines", title: "Scadenze", subtitle: "Documenti e promemoria", symbol: "calendar.badge.clock", tint: .red),
         .init(id: "spend", title: "Spend", subtitle: "Spese rapide", symbol: "eurosign.circle.fill", tint: .mint),
-        .init(id: "messages", title: "Messaggi", subtitle: "Programma WhatsApp · Beta", symbol: "message.badge.clock.fill", tint: .green)
+        .init(id: "messages", title: "Messaggi", subtitle: "Invio programmato dal PC", symbol: "message.badge.clock.fill", tint: .green)
     ]
 }

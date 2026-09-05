@@ -20,6 +20,8 @@ jobs:
         run: sh Tests/run-core-checks.sh
       - name: Check PC Remote configuration
         run: sh Tests/run-remote-checks.sh
+      - name: Check WhatsApp scheduling models
+        run: sh Tests/run-whatsapp-checks.sh
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build for iOS Simulator

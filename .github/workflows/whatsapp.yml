@@ -1,0 +1,80 @@
+name: WhatsApp Windows Companion
+
+on:
+  push:
+    branches: [main]
+    paths: ['WhatsAppBridge/**', '.github/workflows/whatsapp.yml']
+  pull_request:
+    paths: ['WhatsAppBridge/**', '.github/workflows/whatsapp.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install locked dependencies without install scripts
+        working-directory: WhatsAppBridge
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Test scheduling, persistence and authenticated HTTP without real sends
+        working-directory: WhatsAppBridge
+        run: npm test
+      - name: Check Windows PowerShell 5.1 syntax
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          Get-ChildItem WhatsAppBridge/*.ps1 | ForEach-Object {
+            $parseErrors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$null, [ref]$parseErrors) | Out-Null
+            if ($parseErrors) { throw ($parseErrors | Out-String) }
+          }
+      - name: Verify Windows browser with a blank page only
+        if: runner.os == 'Windows'
+        working-directory: WhatsAppBridge
+        run: node smoke-browser.mjs
+      - name: Package Node and Windows component
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path package/iDom-WhatsApp | Out-Null
+          Copy-Item (Get-Command node).Source package/iDom-WhatsApp/node.exe
+          Copy-Item WhatsAppBridge/*.mjs package/iDom-WhatsApp/
+          Copy-Item WhatsAppBridge/*.ps1 package/iDom-WhatsApp/
+          Copy-Item WhatsAppBridge/package*.json package/iDom-WhatsApp/
+          Copy-Item WhatsAppBridge/README.md package/iDom-WhatsApp/
+          Copy-Item WhatsAppBridge/node_modules package/iDom-WhatsApp/ -Recurse
+          ./package/iDom-WhatsApp/node.exe ./package/iDom-WhatsApp/index.mjs --data "$env:RUNNER_TEMP/wa-check" --init
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged init failed' }
+          $config = Get-Content "$env:RUNNER_TEMP/wa-check/config.json" -Raw | ConvertFrom-Json
+          $entry = (Resolve-Path package/iDom-WhatsApp/index.mjs).Path
+          $process = Start-Process ./package/iDom-WhatsApp/node.exe -ArgumentList ('"{0}" --data "{1}/wa-check" --dry-run' -f $entry, $env:RUNNER_TEMP) -PassThru
+          try {
+            $status = $null
+            for ($attempt = 0; $attempt -lt 30; $attempt++) {
+              try {
+                $status = Invoke-RestMethod http://127.0.0.1:47322/v1/status -Headers @{ Authorization = 'Bearer ' + $config.token } -TimeoutSec 2
+                break
+              } catch { Start-Sleep -Seconds 1 }
+            }
+            if (-not $status.simulated -or $status.role -ne 'whatsapp') { throw 'Packaged simulation did not start' }
+          } finally { Stop-Process -Id $process.Id -ErrorAction SilentlyContinue }
+          Get-ChildItem package/iDom-WhatsApp -File -Recurse | Where-Object Name -ne 'SHA256.txt' | Get-FileHash -Algorithm SHA256 | Format-List | Out-File package/iDom-WhatsApp/SHA256.txt
+      - name: Downloadable Windows component
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: iDom-WhatsApp-Windows-x64
+          path: package/iDom-WhatsApp/
+          retention-days: 30

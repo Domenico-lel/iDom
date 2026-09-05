@@ -24,7 +24,7 @@ struct SettingsView: View {
 
             Section("Beta") {
                 Label("PC Remote · alimentazione, richiede configurazione", systemImage: "desktopcomputer")
-                Label("Messaggi WhatsApp · solo programmazione", systemImage: "message")
+                Label("WhatsApp · invio automatico dal PC", systemImage: "message")
             }
 
             Section("Dati") {
