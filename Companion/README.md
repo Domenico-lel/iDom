@@ -4,6 +4,8 @@ Questa prima versione aggiunge **spegnimento, annullamento e accensione Wake-on-
 
 ## Come si collega
 
+Per la configurazione personale è escluso un Mac sempre acceso. La modalità ponte descritta sotto rimane una capacità del software, ma non è la soluzione scelta per questa installazione. Il percorso router ZTE + PC Windows è ancora da validare sul dispositivo e richiederà l’adattamento del collegamento prima di poter dichiarare funzionante l’accensione fuori casa senza ponte separato.
+
 - iPhone e PC usano lo stesso account Tailscale. iDom si collega all'indirizzo HTTPS privato del PC e invia una chiave di collegamento.
 - Il componente Windows ascolta **solo su 127.0.0.1:47321**. Tailscale Serve lo rende raggiungibile nella rete privata su HTTPS, porta **8443**. Nessuna porta pubblica del router, nessun Funnel, nessuna eccezione HTTP/certificato nell'app.
 - Il pacchetto Windows usa la modalità **onedir** di PyInstaller: eseguibile e librerie vengono copiati nella cartella protetta del programma, evitando l’estrazione temporanea di una build onefile durante l’esecuzione privilegiata. [Indicazione del produttore](https://www.pyinstaller.org/en/stable/operating-mode.html).

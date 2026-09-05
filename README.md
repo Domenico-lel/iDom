@@ -51,6 +51,8 @@ Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico r
 
 ## PC Remote · novità 0.4.0
 
+**Vincolo della configurazione personale:** il Mac non può restare acceso e non deve essere richiesto come ponte. Va verificata la soluzione con iPhone, router ZTE ZXHN F6746G e PC Windows Ethernet. Il supporto di accensione attualmente implementato tramite ponte separato non completa questa configurazione: prima servono una prova Wake-on-LAN da arresto completo e la verifica del recapito attraverso la VPN del router, poi l’adattamento del client. Nessuna compatibilità router/PC è presunta dalla sola presenza del server VPN.
+
 - Prima versione per **accendere e spegnere un PC Windows anche fuori casa**, tramite rete privata Tailscale. Nessun controllo schermo/mouse/tastiera in questa versione.
 - In iDom: collegamento con indirizzo HTTPS e chiave, stato raggiungibilità, Spegni con conferma e conto alla rovescia di 30 secondi, Annulla spegnimento, Accendi tramite ponte Wake-on-LAN configurato. Nessuno spegnimento viene inviato aprendo la schermata.
 - Nuovo componente Windows con avvio automatico prima del login, API limitata all'alimentazione, autenticazione, protezione delle credenziali e pacchetto eseguibile generato dal workflow **PC Remote Companion**. Il pacchetto Windows contiene eseguibile e librerie (`onedir`), installati insieme nella cartella protetta Program Files con permessi dei file reimpostati dopo la copia; non usa estrazione temporanea di librerie quando avviato come SYSTEM. Il componente usa Waitress 3.0.2 su loopback, dietro Tailscale Serve HTTPS privato; il PC non viene esposto pubblicamente.
