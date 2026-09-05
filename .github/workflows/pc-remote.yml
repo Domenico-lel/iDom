@@ -40,17 +40,17 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           python -m pip install -r Companion/requirements-build.txt
-          python -m PyInstaller --clean --noconfirm --onefile --name iDomRemote --distpath package Companion/idom_remote.py
+          python -m PyInstaller --clean --noconfirm --onedir --name iDomRemote --distpath package Companion/idom_remote.py
       - name: Check packaged executable and collect installer
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          ./package/iDomRemote.exe --config "$env:RUNNER_TEMP/pc-check.json" --init pc
+          ./package/iDomRemote/iDomRemote.exe --config "$env:RUNNER_TEMP/pc-check.json" --init pc
           if ($LASTEXITCODE -ne 0) { throw 'Init failed' }
-          ./package/iDomRemote.exe --config "$env:RUNNER_TEMP/pc-check.json" --check
+          ./package/iDomRemote/iDomRemote.exe --config "$env:RUNNER_TEMP/pc-check.json" --check
           if ($LASTEXITCODE -ne 0) { throw 'Config check failed' }
           $fixture = Get-Content "$env:RUNNER_TEMP/pc-check.json" -Raw | ConvertFrom-Json
-          $process = Start-Process ./package/iDomRemote.exe -ArgumentList ('--config "{0}/pc-check.json" --dry-run' -f $env:RUNNER_TEMP) -PassThru
+          $process = Start-Process ./package/iDomRemote/iDomRemote.exe -ArgumentList ('--config "{0}/pc-check.json" --dry-run' -f $env:RUNNER_TEMP) -PassThru
           try {
             $response = $null
             for ($attempt = 0; $attempt -lt 30; $attempt++) {
@@ -61,13 +61,13 @@ jobs:
             }
             if (-not $response.simulated -or $response.role -ne 'pc') { throw 'Packaged HTTP server did not start in simulation mode' }
           } finally { Stop-Process -Id $process.Id -ErrorAction SilentlyContinue }
-          Copy-Item Companion/*.ps1 package/
-          Copy-Item Companion/README.md package/
-          Get-FileHash package/iDomRemote.exe -Algorithm SHA256 | Format-List | Out-File package/SHA256.txt
+          Copy-Item Companion/*.ps1 package/iDomRemote/
+          Copy-Item Companion/README.md package/iDomRemote/
+          Get-ChildItem package/iDomRemote -File -Recurse | Get-FileHash -Algorithm SHA256 | Format-List | Out-File package/iDomRemote/SHA256.txt
       - name: Downloadable Windows component
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: iDom-Remote-Windows-x64
-          path: package/
+          path: package/iDomRemote/
           retention-days: 30

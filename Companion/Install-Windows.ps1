@@ -4,8 +4,9 @@ param()
 $ErrorActionPreference = 'Stop'
 $installDir = Join-Path $env:ProgramFiles 'iDom Remote'
 $sourceExe = Join-Path $PSScriptRoot 'iDomRemote.exe'
+$sourceRuntime = Join-Path $PSScriptRoot '_internal'
 $taskName = 'iDom Remote'
-if (-not (Test-Path $sourceExe)) { throw 'Estrai tutta la cartella scaricata: manca iDomRemote.exe.' }
+if (-not (Test-Path $sourceExe) -or -not (Test-Path $sourceRuntime)) { throw 'Estrai tutta la cartella scaricata: servono iDomRemote.exe e la cartella _internal.' }
 $tailscale = Join-Path $env:ProgramFiles 'Tailscale\tailscale.exe'
 if (-not (Test-Path $tailscale)) { throw 'Installa prima Tailscale per Windows ed entra nel tuo account.' }
 if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) {
@@ -16,6 +17,7 @@ New-Item -ItemType Directory -Path $installDir -Force | Out-Null
 & icacls.exe $installDir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' | Out-Null
 if ($LASTEXITCODE -ne 0) { throw 'Impossibile proteggere la cartella di installazione.' }
 Copy-Item $sourceExe (Join-Path $installDir 'iDomRemote.exe') -Force
+Copy-Item $sourceRuntime $installDir -Recurse -Force
 Copy-Item (Join-Path $PSScriptRoot 'Uninstall-Windows.ps1') $installDir -Force
 $exe = Join-Path $installDir 'iDomRemote.exe'
 $config = Join-Path $installDir 'config.json'
