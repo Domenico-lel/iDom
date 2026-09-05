@@ -15,7 +15,7 @@ Prima versione per messaggi di testo individuali, usando il proprio account What
 
 ## Installazione
 
-1. Scarica l’artefatto **iDom-WhatsApp-Windows-x64** dall’ultima esecuzione riuscita di [WhatsApp Windows Companion](https://github.com/Domenico-lel/iDom/actions/workflows/whatsapp.yml). Serve accesso a GitHub; disponibilità 30 giorni. Estrai tutta la cartella. Include Node.js e le dipendenze; non occorre installare Node separatamente.
+1. Scarica l’artefatto **iDom-WhatsApp-Windows-x64** dall’ultima esecuzione riuscita di [WhatsApp Windows Companion](https://github.com/Domenico-lel/iDom/actions/workflows/whatsapp.yml). Serve accesso a GitHub; disponibilità 30 giorni. Estrai tutta la cartella. Include Node.js, la sua licenza e le dipendenze; non occorre installare Node separatamente.
 2. Apri PowerShell **come amministratore con il tuo stesso account Windows**, poi entra nella cartella estratta. Lo script non è firmato: se bloccato, sblocca quel file e limita l’eventuale modifica della policy alla finestra corrente:
 
    ```powershell

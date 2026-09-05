@@ -49,7 +49,9 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path package/iDom-WhatsApp | Out-Null
-          Copy-Item (Get-Command node).Source package/iDom-WhatsApp/node.exe
+          $nodePath = (Get-Command node).Source
+          Copy-Item $nodePath package/iDom-WhatsApp/node.exe
+          Copy-Item (Join-Path (Split-Path $nodePath) 'LICENSE') package/iDom-WhatsApp/NODE-LICENSE.txt
           Copy-Item WhatsAppBridge/*.mjs package/iDom-WhatsApp/
           Copy-Item WhatsAppBridge/*.ps1 package/iDom-WhatsApp/
           Copy-Item WhatsAppBridge/package*.json package/iDom-WhatsApp/
