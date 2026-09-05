@@ -64,6 +64,8 @@ Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico r
 
 Verifiche locali eseguite: **22 controlli PC Remote**, **16 test del componente** (incluso HTTP reale su loopback senza azioni hardware), **36 controlli sui dati precedenti** e **build iOS Simulator riuscita**. I 16 test del componente sono superati anche su Windows e Linux; l’eseguibile Windows è stato generato e avviato in modalità prova su GitHub. La build firmata 0.4.0 è riuscita ed è stata installata e avviata sull’iPhone collegato. Gli script di installazione usano UTF-8 con BOM per Windows PowerShell 5.1; la guida spiega la policy limitata alla sola sessione.
 
+Verifica finale dell’app: **4 test UI superati**, compreso il ciclo completo di collegamento e rimozione nel portachiavi, su [GitHub Actions](https://github.com/Domenico-lel/iDom/actions/runs/33956382063). Build 6 installata e avviata sull’iPhone; il pulsante Collega il PC è stato confermato dall’utente. Il pacchetto Windows include un elenco SHA-256 dei file, escludendo il file dell’elenco stesso dal calcolo.
+
 La prima esecuzione UI della 0.4.0 ha superato i tre test degli strumenti precedenti ma ha rilevato l’accesso negato al portachiavi nella build del simulatore senza firma. La build 6 abilita la firma ad-hoc dei test, distingue l’errore di installazione dal telefono bloccato e aggiunge la prova di salvataggio, riapertura e rimozione delle credenziali sintetiche.
 
 La prova sul PC Windows domestico e da rete mobile richiede installazione del componente, collegamento Tailscale e configurazione hardware Wake-on-LAN. Non è ancora stata eseguita: il software non equivale a un'accensione reale già verificata.

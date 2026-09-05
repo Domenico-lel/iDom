@@ -63,7 +63,7 @@ jobs:
           } finally { Stop-Process -Id $process.Id -ErrorAction SilentlyContinue }
           Copy-Item Companion/*.ps1 package/iDomRemote/
           Copy-Item Companion/README.md package/iDomRemote/
-          Get-ChildItem package/iDomRemote -File -Recurse | Get-FileHash -Algorithm SHA256 | Format-List | Out-File package/iDomRemote/SHA256.txt
+          Get-ChildItem package/iDomRemote -File -Recurse | Where-Object Name -ne 'SHA256.txt' | Get-FileHash -Algorithm SHA256 | Format-List | Out-File package/iDomRemote/SHA256.txt
       - name: Downloadable Windows component
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
