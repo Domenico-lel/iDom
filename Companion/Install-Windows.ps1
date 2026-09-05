@@ -19,6 +19,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Impossibile proteggere la cartella di installa
 Copy-Item $sourceExe (Join-Path $installDir 'iDomRemote.exe') -Force
 Copy-Item $sourceRuntime $installDir -Recurse -Force
 Copy-Item (Join-Path $PSScriptRoot 'Uninstall-Windows.ps1') $installDir -Force
+# Reset copied file ACLs to inherit only the protected parent before executing any code.
+& icacls.exe (Join-Path $installDir '*') /reset /T | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Impossibile proteggere i file del programma.' }
 $exe = Join-Path $installDir 'iDomRemote.exe'
 $config = Join-Path $installDir 'config.json'
 if (-not (Test-Path $config)) {
