@@ -20,14 +20,16 @@ struct HomeView: View {
                     Text("Domenico").font(.largeTitle.bold())
                 }
 
-                VStack(alignment: .leading, spacing: 14) {
-                    Text("Stato").font(.headline)
-                    HStack {
-                        Label("iDom pronto", systemImage: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
-                        Spacer()
-                        Text("Tutto ok").foregroundStyle(.secondary)
+                HStack(spacing: 12) {
+                    Image(systemName: "sparkles")
+                        .font(.title2)
+                        .foregroundStyle(.blue)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("iDom è pronto").font(.headline)
+                        Text("Il tuo centro di controllo personale").font(.caption).foregroundStyle(.secondary)
                     }
+                    Spacer()
+                    Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
                 }
                 .padding(18)
                 .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
@@ -36,20 +38,19 @@ struct HomeView: View {
                     Text("I tuoi strumenti").font(.title2.bold())
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(ModuleCatalog.modules) { module in
-                            NavigationLink(value: module) {
-                                ModuleCard(module: module)
-                            }
-                            .buttonStyle(.plain)
+                            NavigationLink(value: module) { ModuleCard(module: module) }
+                                .buttonStyle(.plain)
                         }
                     }
                 }
             }
             .padding()
         }
+        .background(Color(uiColor: .systemGroupedBackground))
         .navigationTitle("iDom")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: iDomModule.self) { module in
-            ModulePlaceholderView(module: module)
+            ModuleDestinationView(module: module)
         }
     }
 }
@@ -74,15 +75,19 @@ private struct ModuleCard: View {
     }
 }
 
-struct ModulePlaceholderView: View {
+struct ModuleDestinationView: View {
     let module: iDomModule
 
-    var body: some View {
-        ContentUnavailableView {
-            Label(module.title, systemImage: module.symbol)
-        } description: {
-            Text("Questo modulo è pronto per essere sviluppato dentro iDom.")
+    @ViewBuilder var body: some View {
+        if module.id == "copy" {
+            QuickCopyView()
+        } else {
+            ContentUnavailableView {
+                Label(module.title, systemImage: module.symbol)
+            } description: {
+                Text("Modulo in arrivo.")
+            }
+            .navigationTitle(module.title)
         }
-        .navigationTitle(module.title)
     }
 }
