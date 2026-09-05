@@ -23,6 +23,7 @@ struct SettingsView: View {
             }
 
             Section("Beta") {
+                Label("PC Remote · alimentazione, richiede configurazione", systemImage: "desktopcomputer")
                 Label("Messaggi WhatsApp · solo programmazione", systemImage: "message")
             }
 
@@ -32,7 +33,6 @@ struct SettingsView: View {
             }
 
             Section("In sviluppo") {
-                Label("PC Remote — non completo", systemImage: "desktopcomputer")
                 Label("Rete — non completo", systemImage: "wifi")
             }
 

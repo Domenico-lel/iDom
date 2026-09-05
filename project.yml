@@ -30,8 +30,8 @@ targets:
         PRODUCT_NAME: "$(TARGET_NAME)"
         MACH_O_TYPE: mh_execute
         PRODUCT_BUNDLE_IDENTIFIER: it.domenicolella.iDom
-        MARKETING_VERSION: 0.3.0
-        CURRENT_PROJECT_VERSION: 4
+        MARKETING_VERSION: 0.4.0
+        CURRENT_PROJECT_VERSION: 5
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: iDom
         INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "iDom usa la tua posizione solo quando scegli di salvare dove hai parcheggiato."

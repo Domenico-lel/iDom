@@ -1,0 +1,21 @@
+# Example: adapt User and paths to the dedicated unprivileged account on your bridge.
+[Unit]
+Description=iDom Wake-on-LAN bridge
+After=network-online.target tailscaled.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=idom
+WorkingDirectory=/opt/idom/Companion
+ExecStart=/opt/idom/Companion/.venv/bin/python /opt/idom/Companion/idom_remote.py --config /opt/idom/Companion/wake.json
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

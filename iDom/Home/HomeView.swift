@@ -21,6 +21,7 @@ struct ModuleDestinationView: View {
     let module: iDomModule
     @ViewBuilder var body: some View {
         switch module.id {
+        case "pc": PCRemoteView()
         case "copy": QuickCopyView()
         case "parking": ParkingView()
         case "deadlines": DeadlinesView()

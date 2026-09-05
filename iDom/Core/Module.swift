@@ -10,7 +10,7 @@ struct iDomModule: Identifiable, Hashable {
 
 enum ModuleCatalog {
     static let modules: [iDomModule] = [
-        .init(id: "pc", title: "PC Remote", subtitle: "In sviluppo", symbol: "desktopcomputer", tint: .blue),
+        .init(id: "pc", title: "PC Remote", subtitle: "Accensione e spegnimento", symbol: "desktopcomputer", tint: .blue),
         .init(id: "network", title: "Rete", subtitle: "In sviluppo", symbol: "wifi", tint: .green),
         .init(id: "copy", title: "Quick Copy", subtitle: "Testi sempre pronti", symbol: "doc.on.doc", tint: .indigo),
         .init(id: "parking", title: "Parcheggio", subtitle: "Ritrova la tua auto", symbol: "car.fill", tint: .orange),

@@ -4,3 +4,11 @@ DerivedData/
 .DS_Store
 project.local.yml
 Config/Signing.local.xcconfig
+# Local PC pairing secrets and companion build outputs
+Companion/*.json
+Companion/.venv/
+Companion/__pycache__/
+Companion/tests/__pycache__/
+Companion/build/
+Companion/dist/
+Companion/*.spec

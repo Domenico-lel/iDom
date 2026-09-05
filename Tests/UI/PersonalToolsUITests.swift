@@ -19,6 +19,19 @@ final class PersonalToolsUITests: XCTestCase {
         XCTAssertTrue(tool.waitForExistence(timeout: 10))
         tool.tap()
     }
+    func testPCRemoteRequiresPairingBeforePowerCommands() {
+        openTool("PC Remote")
+        XCTAssertTrue(app.buttons["pc.configure"].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.buttons["Spegni"].exists)
+        capture("PC Remote · collegamento")
+        app.buttons["pc.configure"].tap()
+        XCTAssertFalse(app.buttons["Salva"].isEnabled)
+        app.textFields["Indirizzo HTTPS Tailscale"].tap()
+        app.textFields["Indirizzo HTTPS Tailscale"].typeText("http://example.org")
+        XCTAssertFalse(app.buttons["Salva"].isEnabled)
+        app.buttons["Annulla"].tap()
+        XCTAssertTrue(app.buttons["pc.configure"].waitForExistence(timeout: 5))
+    }
     func testQuickCopyPersistsEditsAndDeletes() {
         openTool("Quick Copy")
         app.buttons["Aggiungi testo"].tap()

@@ -3,7 +3,7 @@
 iDom è un hub personale nativo per iPhone, scritto in SwiftUI. I dati dei quattro strumenti personali sono salvati sul dispositivo; non serve un account o un server.
 
 ## Versione corrente
-**0.3.0 — build 4**
+**0.4.0 — build 5**
 
 ## Strumenti personali
 
@@ -44,10 +44,27 @@ iDom è un hub personale nativo per iPhone, scritto in SwiftUI. I dati dei quatt
 | Modulo | Stato |
 | --- | --- |
 | Messaggi WhatsApp | Beta: salva solo la programmazione, senza invio automatico né promemoria WhatsApp |
-| PC Remote | In sviluppo |
+| PC Remote | Alimentazione Windows: richiede componente e Tailscale; accensione con ponte Wake-on-LAN |
 | Rete | In sviluppo |
 
-Questi tre moduli non sono stati estesi nella 0.3.0. L'invio WhatsApp automatico richiederà un backend e un provider/API autorizzato.
+Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico richiederà un backend e un provider/API autorizzato.
+
+## PC Remote · novità 0.4.0
+
+- Prima versione per **accendere e spegnere un PC Windows anche fuori casa**, tramite rete privata Tailscale. Nessun controllo schermo/mouse/tastiera in questa versione.
+- In iDom: collegamento con indirizzo HTTPS e chiave, stato raggiungibilità, Spegni con conferma e conto alla rovescia di 30 secondi, Annulla spegnimento, Accendi tramite ponte Wake-on-LAN configurato. Nessuno spegnimento viene inviato aprendo la schermata.
+- Nuovo componente Windows con avvio automatico prima del login, API limitata all'alimentazione, autenticazione, protezione delle credenziali e pacchetto eseguibile generato dal workflow **PC Remote Companion**. Il componente usa Waitress 3.0.2 su loopback, dietro Tailscale Serve HTTPS privato; il PC non viene esposto pubblicamente.
+- **Accendere un PC spento richiede un dispositivo acceso nella sua rete**, Ethernet e supporto Wake-on-LAN da BIOS/driver. Il solo iPhone più il PC spento non bastano. Il ponte può essere Linux/macOS/altro Windows; non è stata verificata una funzione equivalente nel router domestico indicato come BE7200.
+- La configurazione PC Remote usa il portachiavi di questo iPhone, senza sincronizzazione; tutti i salvataggi degli strumenti precedenti restano invariati. Rimuovi collegamento elimina le credenziali dall'app; per revocarle anche sul computer va rigenerata la chiave.
+- **Guida completa e requisiti:** [Companion/README.md](Companion/README.md), con installazione Windows, ponte di accensione, test in simulazione, aggiornamento, rimozione e verifiche hardware. Gli artefatti Windows sono disponibili nelle esecuzioni del workflow per 30 giorni.
+
+### Verifiche PC Remote
+
+`sh Tests/run-remote-checks.sh` verifica gli indirizzi sicuri, le chiavi, la configurazione e il formato delle risposte. In `Companion`, `python -m unittest discover -s tests -v` verifica autenticazione, ruoli, annullamento, richieste duplicate, formato Wake-on-LAN e richieste HTTP reali con azioni di alimentazione sostituite. Nessun test spegne il computer.
+
+Verifiche locali eseguite: **22 controlli PC Remote**, **16 test del componente** (incluso HTTP reale su loopback senza azioni hardware), **36 controlli sui dati precedenti** e **build iOS Simulator riuscita**. Il workflow verifica anche Windows/Linux e la schermata di collegamento.
+
+La prova sul PC Windows domestico e da rete mobile richiede installazione del componente, collegamento Tailscale e configurazione hardware Wake-on-LAN. Non è ancora stata eseguita: il software non equivale a un'accensione reale già verificata.
 
 ## Dati e compatibilità
 - iOS 17 o successivo; interfaccia per iPhone.

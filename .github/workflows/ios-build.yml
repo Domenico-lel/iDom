@@ -18,6 +18,8 @@ jobs:
         run: brew install xcodegen
       - name: Check personal data and migrations
         run: sh Tests/run-core-checks.sh
+      - name: Check PC Remote configuration
+        run: sh Tests/run-remote-checks.sh
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build for iOS Simulator
