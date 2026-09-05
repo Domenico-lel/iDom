@@ -34,7 +34,7 @@ export function createServer({ token, queue, adapter, health }) {
       catch { throw new APIError(400, 'JSON non valido.'); }
       if (req.url === '/v1/jobs') {
         if (!adapter.ready) throw new APIError(409, 'Collega WhatsApp sul PC prima di programmare.');
-        return reply(200, queue().add(body));
+        return reply(200, queue().add(body, adapter.account || null));
       }
       const cancel = req.url.match(/^\/v1\/jobs\/([^/]+)\/cancel$/);
       if (cancel && uuid(cancel[1]) && body && Object.keys(body).length === 0) return reply(200, queue().cancel(cancel[1]));

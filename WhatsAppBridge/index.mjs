@@ -74,8 +74,8 @@ if (!health.error) {
       });
       client.on('qr', value => { adapter.qr = value; adapter.ready = false; adapter.connection = 'pairing'; });
       client.on('ready', () => {
-        adapter.qr = null; adapter.ready = true; adapter.connection = 'ready';
-        adapter.account = client.info?.wid?.user || null;
+        adapter.qr = null; adapter.account = client.info?.wid?.user || null;
+        adapter.ready = Boolean(adapter.account); adapter.connection = adapter.ready ? 'ready' : 'disconnected';
       });
       client.on('auth_failure', () => { adapter.qr = null; adapter.ready = false; adapter.connection = 'disconnected'; });
       client.on('disconnected', () => {

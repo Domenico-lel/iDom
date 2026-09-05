@@ -57,7 +57,7 @@ Non inviare chiavi, QR o cartelle di sessione in chat, screenshot pubblici o rep
 - `submitted`: WhatsApp Web ha restituito un identificativo; non equivale a consegna al destinatario.
 - `delivered` / `read`: ricevuta la relativa conferma WhatsApp, quando disponibile. Le conferme possono non arrivare o non essere recuperate dopo un riavvio.
 - `uncertain`: timeout, errore ambiguo o riavvio durante l’invio. **Nessun retry automatico**: verifica la chat prima di programmare di nuovo.
-- `failed`: numero non trovato, senza invio.
+- `failed`: numero non trovato oppure account WhatsApp collegato diverso da quello usato alla programmazione, senza invio.
 - `missed`: tolleranza di 5 minuti superata senza iniziare l’invio.
 - `cancelled`: annullamento confermato dal PC.
 - `simulated`: nessun invio reale; usato nei test.

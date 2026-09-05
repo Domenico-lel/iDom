@@ -109,3 +109,10 @@ test('HTTP authentication, browser isolation, role, validation, scheduling and c
   assert.equal(f.queue.list()[0].state, 'cancelled');
   assert.equal((await fetch(base + '/shutdown', { method: 'POST', headers, body: '{}' })).status, 404);
 });
+
+test('changing the linked WhatsApp account cannot send an existing scheduled message', async t => {
+  const f = fixture(t); f.queue.add(f.input(), 'original-account'); f.advance(60000);
+  await f.queue.tick({ ready: true, account: 'different-account', send: () => assert.fail('wrong sender') });
+  assert.equal(f.queue.list()[0].state, 'failed');
+  assert.match(f.queue.list()[0].detail, /Account WhatsApp cambiato/);
+});

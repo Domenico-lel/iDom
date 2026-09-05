@@ -40,7 +40,7 @@ export class Queue {
   }
   commit(jobs) { const next = { version: 1, jobs }; this.write(this.file, next); this.data = next; }
   list() { return this.data.jobs.map(j => ({ ...j })).sort((a, b) => b.scheduledAt - a.scheduledAt); }
-  add(input) {
+  add(input, account = null) {
     if (!input || Object.keys(input).sort().join(',') !== 'id,message,recipient,scheduledAt' || !uuid(input.id))
       throw new APIError(400, 'Richiesta non valida.');
     const recipient = phoneNumber(input.recipient);
@@ -57,7 +57,7 @@ export class Queue {
       throw new APIError(400, 'Scegli un orario tra almeno 10 secondi ed entro un anno.');
     if (this.data.jobs.length >= 1000 || this.data.jobs.filter(j => j.state === 'queued').length >= 200)
       throw new APIError(409, 'Limite della coda raggiunto (200 programmati, 1000 totali).');
-    const job = { ...candidate, fingerprint: hash, state: 'queued', createdAt: this.now() };
+    const job = { ...candidate, fingerprint: hash, account, state: 'queued', createdAt: this.now() };
     this.commit([...this.data.jobs, job]);
     return { ...job };
   }
@@ -91,6 +91,10 @@ export class Queue {
           continue;
         }
         if (!adapter.ready) continue;
+        if ((job.account ?? null) !== (adapter.account ?? null)) {
+          this.update(job.id, { state: 'failed', detail: 'Account WhatsApp cambiato sul PC. Messaggio non inviato: riprogramma con il nuovo account.' });
+          continue;
+        }
         // Durable claim before any external action. Ambiguous sends are never retried.
         this.update(job.id, { state: 'sending' });
         let timeout;
