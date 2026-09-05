@@ -117,7 +117,8 @@ Prima dell'uso quotidiano sul telefono, verificare il GPS all'aperto, il passagg
 ## Esito verifiche 0.3.0
 - 36 controlli sui dati superati.
 - Build per iOS Simulator riuscita; build firmata per iPhone riuscita con Xcode 26.3.
-- Bundle dei test UI compilato correttamente. Sul Mac locale il servizio del simulatore non ha avviato i test; la verifica UI viene eseguita anche dal workflow GitHub.
+- Test UI superati su [GitHub Actions](https://github.com/Domenico-lel/iDom/actions/runs/33952946892): creazione, modifica, copia, persistenza dopo riavvio, completamento ed eliminazione; apertura del Parcheggio senza posizione. Il servizio del simulatore locale non ha completato l’avvio del runner, quindi l’esecuzione UI è stata verificata su GitHub.
+- Versione 0.3.0 installata sull’iPhone 14 Pro e avviata senza debugger. Home e apertura di uno strumento confermate sul telefono.
 - GPS reale, indicazioni e ricezione delle notifiche a telefono bloccato richiedono la prova sul dispositivo.
 
 ## Regola permanente di progetto
