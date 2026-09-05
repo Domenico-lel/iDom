@@ -3,7 +3,7 @@
 iDom è un hub personale nativo per iPhone, scritto in SwiftUI. I dati dei quattro strumenti personali sono salvati sul dispositivo; non serve un account o un server.
 
 ## Versione corrente
-**0.4.0 — build 5**
+**0.4.0 — build 6**
 
 ## Strumenti personali
 
@@ -54,7 +54,7 @@ Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico r
 - Prima versione per **accendere e spegnere un PC Windows anche fuori casa**, tramite rete privata Tailscale. Nessun controllo schermo/mouse/tastiera in questa versione.
 - In iDom: collegamento con indirizzo HTTPS e chiave, stato raggiungibilità, Spegni con conferma e conto alla rovescia di 30 secondi, Annulla spegnimento, Accendi tramite ponte Wake-on-LAN configurato. Nessuno spegnimento viene inviato aprendo la schermata.
 - Nuovo componente Windows con avvio automatico prima del login, API limitata all'alimentazione, autenticazione, protezione delle credenziali e pacchetto eseguibile generato dal workflow **PC Remote Companion**. Il componente usa Waitress 3.0.2 su loopback, dietro Tailscale Serve HTTPS privato; il PC non viene esposto pubblicamente.
-- **Accendere un PC spento richiede un dispositivo acceso nella sua rete**, Ethernet e supporto Wake-on-LAN da BIOS/driver. Il solo iPhone più il PC spento non bastano. Il ponte può essere Linux/macOS/altro Windows; non è stata verificata una funzione equivalente nel router domestico indicato come BE7200.
+- **Accendere un PC spento richiede un dispositivo acceso nella sua rete**, Ethernet e supporto Wake-on-LAN da BIOS/driver. Il solo iPhone più il PC spento non bastano. Il ponte può essere Linux/macOS/altro Windows; il router identificato è **ZTE ZXHN F6746G**. Il manuale WINDTRE descrive server VPN e binding IP-MAC, ma non un comando Wake-on-LAN: l’accensione usando solo quel router non è verificata.
 - La configurazione PC Remote usa il portachiavi di questo iPhone, senza sincronizzazione; tutti i salvataggi degli strumenti precedenti restano invariati. Rimuovi collegamento elimina le credenziali dall'app; per revocarle anche sul computer va rigenerata la chiave.
 - **Guida completa e requisiti:** [Companion/README.md](Companion/README.md), con installazione Windows, ponte di accensione, test in simulazione, aggiornamento, rimozione e verifiche hardware. Gli artefatti Windows sono disponibili nelle esecuzioni del workflow per 30 giorni.
 
@@ -63,6 +63,8 @@ Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico r
 `sh Tests/run-remote-checks.sh` verifica gli indirizzi sicuri, le chiavi, la configurazione e il formato delle risposte. In `Companion`, `python -m unittest discover -s tests -v` verifica autenticazione, ruoli, annullamento, richieste duplicate, formato Wake-on-LAN e richieste HTTP reali con azioni di alimentazione sostituite. Nessun test spegne il computer.
 
 Verifiche locali eseguite: **22 controlli PC Remote**, **16 test del componente** (incluso HTTP reale su loopback senza azioni hardware), **36 controlli sui dati precedenti** e **build iOS Simulator riuscita**. I 16 test del componente sono superati anche su Windows e Linux; l’eseguibile Windows è stato generato e avviato in modalità prova su GitHub. La build firmata 0.4.0 è riuscita ed è stata installata e avviata sull’iPhone collegato. Gli script di installazione usano UTF-8 con BOM per Windows PowerShell 5.1; la guida spiega la policy limitata alla sola sessione.
+
+La prima esecuzione UI della 0.4.0 ha superato i tre test degli strumenti precedenti ma ha rilevato l’accesso negato al portachiavi nella build del simulatore senza firma. La build 6 abilita la firma ad-hoc dei test, distingue l’errore di installazione dal telefono bloccato e aggiunge la prova di salvataggio, riapertura e rimozione delle credenziali sintetiche.
 
 La prova sul PC Windows domestico e da rete mobile richiede installazione del componente, collegamento Tailscale e configurazione hardware Wake-on-LAN. Non è ancora stata eseguita: il software non equivale a un'accensione reale già verificata.
 
@@ -122,10 +124,10 @@ Test delle schermate (scegli un simulatore iPhone disponibile in `xcrun simctl l
 ```bash
 xcodebuild -project iDom.xcodeproj -scheme iDom \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-  -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO test
+  -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM= test
 ```
 
-Il workflow GitHub Actions esegue i controlli sui dati, la build e i test delle schermate su un simulatore iPhone disponibile. Conserva il risultato dei test per 7 giorni.
+Il workflow GitHub Actions esegue i controlli sui dati, la build e i test delle schermate su un simulatore iPhone disponibile. La sola compilazione può essere senza firma; per eseguire i test che usano il portachiavi occorre la firma ad-hoc (`CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM=`), senza certificati personali. Conserva il risultato dei test per 7 giorni.
 
 I test delle schermate aggiungono elementi con nomi univoci e li eliminano al termine. Usare un simulatore di test, non il proprio iPhone.
 

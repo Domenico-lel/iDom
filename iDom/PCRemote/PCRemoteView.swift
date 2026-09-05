@@ -14,6 +14,7 @@ final class PCRemoteModel: ObservableObject {
 
     func reload() {
         do { configuration = try RemoteKeychain.read(); loadFailed = false }
+        catch let error as RemoteFailure { loadFailed = true; message = error.message }
         catch { loadFailed = true; message = "Configurazione non leggibile. Gli originali sono conservati. Sblocca l’iPhone e riprova." }
         status = nil
         connection = "Da verificare"
@@ -155,11 +156,11 @@ private struct PCRemoteSetupView: View {
         NavigationStack {
             Form {
                 Section("PC Windows") {
-                    endpointFields($configuration.pc)
+                    endpointFields($configuration.pc, prefix: "pc")
                 }
                 Section {
                     Toggle("Ho un ponte di accensione", isOn: $configuration.wakeEnabled)
-                    if configuration.wakeEnabled { endpointFields($configuration.wake) }
+                    if configuration.wakeEnabled { endpointFields($configuration.wake, prefix: "wake") }
                 } header: { Text("Accensione") } footer: {
                     Text("Il ponte esegue il componente iDom in modalità Wake-on-LAN su un altro dispositivo sempre acceso in casa. Non inserire qui l’indirizzo del PC da accendere.")
                 }
@@ -185,10 +186,12 @@ private struct PCRemoteSetupView: View {
         }
     }
 
-    @ViewBuilder private func endpointFields(_ endpoint: Binding<RemoteEndpoint>) -> some View {
+    @ViewBuilder private func endpointFields(_ endpoint: Binding<RemoteEndpoint>, prefix: String) -> some View {
         TextField("Indirizzo HTTPS Tailscale", text: endpoint.address)
+            .accessibilityIdentifier("\(prefix).address")
             .keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
         SecureField("Chiave di collegamento", text: endpoint.token)
+            .accessibilityIdentifier("\(prefix).token")
             .textInputAutocapitalization(.never).autocorrectionDisabled()
     }
 }

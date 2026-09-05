@@ -15,6 +15,9 @@ enum RemoteKeychain {
         var result: CFTypeRef?
         let status = SecItemCopyMatching(request as CFDictionary, &result)
         if status == errSecItemNotFound { return nil }
+        if status == errSecMissingEntitlement {
+            throw RemoteFailure(message: "Questa installazione non consente l’accesso al portachiavi. Reinstalla una versione firmata di iDom.")
+        }
         guard status == errSecSuccess, let data = result as? Data else {
             throw RemoteFailure(message: "Non riesco ad aprire le credenziali. Sblocca l’iPhone e riprova.")
         }

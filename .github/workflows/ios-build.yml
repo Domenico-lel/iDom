@@ -44,7 +44,7 @@ jobs:
             -derivedDataPath /tmp/idom-ci \
             -resultBundlePath /tmp/idom-ui.xcresult \
             -parallel-testing-enabled NO \
-            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM= \
             test
       - name: Save UI test results
         if: always()
