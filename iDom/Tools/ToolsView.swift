@@ -19,7 +19,7 @@ struct ToolsView: View {
         }
         .navigationTitle("Tools")
         .navigationDestination(for: iDomModule.self) { module in
-            ModulePlaceholderView(module: module)
+            ModuleDestinationView(module: module)
         }
     }
 }
