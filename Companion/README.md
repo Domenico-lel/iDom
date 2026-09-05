@@ -15,6 +15,20 @@ Per la configurazione personale è escluso un Mac sempre acceso. La modalità po
 
 Il router domestico è stato identificato dalla foto come **ZTE ZXHN F6746G**. Il [manuale ufficiale WINDTRE](https://www.windtre.it/Document/manuali/modem/WINDTRE_manuale_utente_ZTE_F6746.pdf.docview.pdf) documenta server VPN (OpenVPN/IPSec) e binding IP-MAC, ma non un comando Wake-on-LAN. La presenza di VPN e binding non dimostra da sola il recapito dei pacchetti a un PC spento: un’eventuale soluzione senza ponte richiede una prova sul firmware e sull’hardware reali. Questa versione **non include un'integrazione proprietaria con il router**: non promette l'accensione tramite router senza averne verificato modello e funzioni. Un eventuale router con Wake-on-LAN richiede un'integrazione specifica; non inserire il suo pannello amministrativo nel campo ponte iDom.
 
+## Prova hardware locale
+
+Il 5 settembre 2026 l’utente ha confermato l’accensione del PC da arresto di Windows, dopo l’invio di tre Magic Packet UDP sulla LAN dal Mac usato solo per la prova. Scheda madre **ASUS ROG STRIX B650-A GAMING WIFI**, Ethernet **Intel I226-V**. Nessun MAC personale o credenziale è conservato in questo documento.
+
+Configurazione effettuata con conferma dell’utente:
+
+- BIOS: Power On By PCI-E abilitato; ErP Ready disabilitato, se presente, secondo la procedura proposta.
+- Driver Intel: Attiva su pacchetto Magic e Attiva su pacchetto Magic dall’S5 abilitati; Pattern Match disabilitato. Procedura di risparmio energia con risveglio consentito solo tramite Magic Packet.
+- Avvio rapido di Windows disabilitato; Ethernet e alimentazione rimaste collegate.
+
+Le impostazioni BIOS/Windows sono state applicate dall’utente, non lette automaticamente. La prova dimostra un’accensione locale dopo arresto, non l’affidabilità dopo lunghe attese, interruzioni di corrente o attraverso Internet. Restano da provare installazione e collegamento del componente, spegnimento dall’app e recapito del risveglio attraverso il router senza Mac sempre acceso.
+
+Riferimenti: [specifiche ASUS con WOL by PME](https://rog.asus.com/motherboards/rog-strix/rog-strix-b650-a-gaming-wifi-model/spec/), [configurazione ASUS](https://www.asus.com/uk/support/faq/1045950/), [risveglio Intel](https://www.intel.com/content/www/us/en/support/articles/000005793/ethernet-products.html).
+
 ## Installazione sul PC Windows 10/11 x64
 
 1. Installa [Tailscale per Windows](https://tailscale.com/download/windows), entra nel tuo account e abilita **Run unattended** dal menu Tailscale, per restare collegato prima dell'accesso a Windows. Installa Tailscale anche sull'iPhone, accedi allo stesso account e attiva la connessione.

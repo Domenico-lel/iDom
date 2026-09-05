@@ -51,7 +51,7 @@ Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico r
 
 ## PC Remote · novità 0.4.0
 
-**Vincolo della configurazione personale:** il Mac non può restare acceso e non deve essere richiesto come ponte. Va verificata la soluzione con iPhone, router ZTE ZXHN F6746G e PC Windows Ethernet. Il supporto di accensione attualmente implementato tramite ponte separato non completa questa configurazione: prima servono una prova Wake-on-LAN da arresto completo e la verifica del recapito attraverso la VPN del router, poi l’adattamento del client. Nessuna compatibilità router/PC è presunta dalla sola presenza del server VPN.
+**Vincolo della configurazione personale:** il Mac non può restare acceso e non deve essere richiesto come ponte. Va verificata la soluzione con iPhone, router ZTE ZXHN F6746G e PC Windows Ethernet. Il supporto di accensione attualmente implementato tramite ponte separato non completa questa configurazione: la prima prova Wake-on-LAN da arresto di Windows nella LAN è riuscita; restano la verifica del recapito attraverso la VPN del router e l’adattamento del client. Nessuna compatibilità router/PC è presunta dalla sola presenza del server VPN.
 
 - Prima versione per **accendere e spegnere un PC Windows anche fuori casa**, tramite rete privata Tailscale. Nessun controllo schermo/mouse/tastiera in questa versione.
 - In iDom: collegamento con indirizzo HTTPS e chiave, stato raggiungibilità, Spegni con conferma e conto alla rovescia di 30 secondi, Annulla spegnimento, Accendi tramite ponte Wake-on-LAN configurato. Nessuno spegnimento viene inviato aprendo la schermata.
@@ -70,7 +70,7 @@ Verifica finale dell’app: **4 test UI superati**, compreso il ciclo completo d
 
 La prima esecuzione UI della 0.4.0 ha superato i tre test degli strumenti precedenti ma ha rilevato l’accesso negato al portachiavi nella build del simulatore senza firma. La build 6 abilita la firma ad-hoc dei test, distingue l’errore di installazione dal telefono bloccato e aggiunge la prova di salvataggio, riapertura e rimozione delle credenziali sintetiche.
 
-La prova sul PC Windows domestico e da rete mobile richiede installazione del componente, collegamento Tailscale e configurazione hardware Wake-on-LAN. Non è ancora stata eseguita: il software non equivale a un'accensione reale già verificata.
+Prova hardware del 5 settembre 2026: l’utente ha confermato l’accensione del PC dopo Arresta il sistema di Windows, ricevendo un Magic Packet sulla LAN. Hardware: ASUS ROG STRIX B650-A GAMING WIFI e Intel Ethernet Controller I226-V; configurazione e limiti della prova sono documentati in [Companion/README.md](Companion/README.md#prova-hardware-locale). Il Mac è stato usato soltanto come mittente temporaneo. Restano da verificare collegamento del componente Windows a iDom, spegnimento dall’app e accensione da rete mobile senza Mac sempre acceso.
 
 ## Dati e compatibilità
 - iOS 17 o successivo; interfaccia per iPhone.
