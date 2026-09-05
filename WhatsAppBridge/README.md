@@ -64,7 +64,7 @@ Non inviare chiavi, QR o cartelle di sessione in chat, screenshot pubblici o rep
 
 La coda JSON viene scritta su file temporaneo, sincronizzata e rinominata prima di confermare una modifica. Prima di chiamare WhatsApp viene salvato `sending`. Un riavvio trasforma un tentativo interrotto in `uncertain`, senza reinviarlo. Il sistema privilegia evitare duplicati: non promette consegna esattamente una volta. La perdita del disco, la revoca della sessione o un errore di WhatsApp non possono essere risolti dal solo scheduler. I contenuti non vengono stampati nei log del servizio.
 
-Le vecchie bozze iDom restano leggibili e non vengono inviate automaticamente. La richiesta temporaneamente in attesa di conferma rimane sull’iPhone senza chiave; il collegamento è nel portachiavi. Rimuovere il collegamento nell’app **non cancella i messaggi già programmati sul PC** e non revoca la sessione WhatsApp.
+Le vecchie bozze iDom restano leggibili e non vengono inviate automaticamente. In presenza di una richiesta incerta puoi correggere la chiave per lo stesso PC, ma non cambiare destinazione finché la richiesta non è risolta. La richiesta temporaneamente in attesa di conferma rimane sull’iPhone senza chiave; il collegamento è nel portachiavi. Rimuovere il collegamento nell’app **non cancella i messaggi già programmati sul PC** e non revoca la sessione WhatsApp.
 
 ## Sicurezza e dati
 

@@ -24,7 +24,7 @@ final class WhatsAppViewModel: ObservableObject {
         } catch { readable = false; issue = .init(message: error.localizedDescription) }
     }
     func configure(_ value: WhatsAppEndpoint) async -> Bool {
-        guard readable, pending == nil, !busy, value.isValid else { return false }
+        guard readable, !busy, value.isValid, pending == nil || pending?.address == value.address else { return false }
         busy = true; defer { busy = false }
         do {
             let checked = try await client.status(value)

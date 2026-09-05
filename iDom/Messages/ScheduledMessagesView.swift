@@ -60,7 +60,7 @@ struct ScheduledMessagesView: View {
                     }
                 }
                 Section {
-                    Button("Modifica collegamento") { showingSetup = true }.disabled(model.pending != nil || model.busy)
+                    Button("Modifica collegamento") { showingSetup = true }.disabled(model.busy)
                     Button("Rimuovi collegamento", role: .destructive) { removing = true }.disabled(model.pending != nil || model.busy)
                 }
             }
@@ -117,7 +117,7 @@ private struct WhatsAppSetupSheet: View {
             Form {
                 Section("Componente WhatsApp sul PC") {
                     TextField("https://pc.nome-rete.ts.net:8444", text: $endpoint.address)
-                        .keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityIdentifier("whatsapp.address")
+                        .keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityIdentifier("whatsapp.address").disabled(model.pending != nil)
                     SecureField("Chiave WhatsApp di 64 caratteri", text: $endpoint.token)
                         .textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityIdentifier("whatsapp.token")
                 }

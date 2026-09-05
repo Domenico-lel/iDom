@@ -60,7 +60,7 @@ La sezione Messaggi programma messaggi di testo individuali tramite **il proprio
 
 **[Installazione, limiti, dati e test: WhatsAppBridge/README.md](WhatsAppBridge/README.md)**. Rete resta in sviluppo. La precedente prova Comandi Rapidi ha soltanto aperto la chat col testo pronto: non viene usata come invio automatico.
 
-Verifica locale della 0.5.0: **10 test del componente** con adapter fittizio e HTTP locale, **28 controlli Swift** su configurazione, numeri, date e bozze precedenti e **build iOS Simulator riuscita**. Build firmata, verifiche UI e pacchetto Windows in verifica. Il primo invio reale richiede ancora il QR dell’utente sul PC e un messaggio di prova al proprio numero. Non è stato inviato alcun messaggio reale dagli strumenti di sviluppo.
+Verifica locale della 0.5.0: **10 test del componente** con adapter fittizio e HTTP locale, **38 controlli Swift** su configurazione, numeri, date e bozze precedenti e **build iOS Simulator riuscita**. Anche la build firmata iPhone è riuscita. Il pacchetto Windows ha superato test Windows/Linux, sintassi PowerShell 5.1, avvio Edge su pagina vuota e avvio del servizio confezionato in simulazione. Verifiche UI ancora in corso. Il primo invio reale richiede ancora il QR dell’utente sul PC e un messaggio di prova al proprio numero. Non è stato inviato alcun messaggio reale dagli strumenti di sviluppo.
 
 
 ## PC Remote · novità 0.4.0
