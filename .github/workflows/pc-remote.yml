@@ -27,9 +27,9 @@ jobs:
       - name: Test authentication, shutdown cancellation and Wake-on-LAN
         working-directory: Companion
         run: python -m unittest discover -s tests -v
-      - name: Check installer PowerShell syntax
+      - name: Check installer Windows PowerShell 5.1 syntax
         if: runner.os == 'Windows'
-        shell: pwsh
+        shell: powershell
         run: |
           Get-ChildItem Companion/*.ps1 | ForEach-Object {
             $parseErrors = $null

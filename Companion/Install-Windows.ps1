@@ -1,4 +1,4 @@
-#Requires -RunAsAdministrator
+﻿#Requires -RunAsAdministrator
 [CmdletBinding()]
 param()
 $ErrorActionPreference = 'Stop'
@@ -40,8 +40,8 @@ Write-Host 'Componente Windows installato e verificato.'
 Write-Host 'In Tailscale attiva Run unattended (Esegui senza accesso utente).'
 Write-Host 'Poi esegui in questo terminale:'
 Write-Host ('& "{0}" serve --bg --https=8443 http://127.0.0.1:47321' -f $tailscale)
-Write-Host 'Segui l’eventuale collegamento per abilitare HTTPS. Usa solo Serve, mai Funnel.'
-Write-Host 'Inserisci in iDom l’indirizzo HTTPS mostrato, con porta :8443.'
+Write-Host 'Se richiesto, segui il collegamento per abilitare HTTPS. Usa solo Serve, mai Funnel.'
+Write-Host 'Inserisci in iDom questo indirizzo HTTPS, con porta :8443.'
 Write-Host 'Questa è la chiave privata da copiare nel campo Chiave di collegamento (non inviarla in chat):'
 Write-Host $localConfig.token
 Write-Host 'Puoi ritrovarla nel file config.json della cartella di installazione, come amministratore.'

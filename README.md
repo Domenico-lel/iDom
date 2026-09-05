@@ -62,7 +62,7 @@ Messaggi e Rete non sono stati estesi nella 0.4.0. L'invio WhatsApp automatico r
 
 `sh Tests/run-remote-checks.sh` verifica gli indirizzi sicuri, le chiavi, la configurazione e il formato delle risposte. In `Companion`, `python -m unittest discover -s tests -v` verifica autenticazione, ruoli, annullamento, richieste duplicate, formato Wake-on-LAN e richieste HTTP reali con azioni di alimentazione sostituite. Nessun test spegne il computer.
 
-Verifiche locali eseguite: **22 controlli PC Remote**, **16 test del componente** (incluso HTTP reale su loopback senza azioni hardware), **36 controlli sui dati precedenti** e **build iOS Simulator riuscita**. Il workflow verifica anche Windows/Linux e la schermata di collegamento.
+Verifiche locali eseguite: **22 controlli PC Remote**, **16 test del componente** (incluso HTTP reale su loopback senza azioni hardware), **36 controlli sui dati precedenti** e **build iOS Simulator riuscita**. I 16 test del componente sono superati anche su Windows e Linux; l’eseguibile Windows è stato generato e avviato in modalità prova su GitHub. La build firmata 0.4.0 è riuscita ed è stata installata e avviata sull’iPhone collegato. Gli script di installazione usano UTF-8 con BOM per Windows PowerShell 5.1; la guida spiega la policy limitata alla sola sessione.
 
 La prova sul PC Windows domestico e da rete mobile richiede installazione del componente, collegamento Tailscale e configurazione hardware Wake-on-LAN. Non è ancora stata eseguita: il software non equivale a un'accensione reale già verificata.
 
