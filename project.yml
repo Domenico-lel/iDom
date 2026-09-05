@@ -1,4 +1,7 @@
 name: iDom
+include:
+  - path: project.local.yml
+    optional: true
 options:
   settingPresets: none
   bundleIdPrefix: it.domenicolella
@@ -12,6 +15,10 @@ settings:
     SWIFT_VERSION: 5.0
     ALWAYS_SEARCH_USER_PATHS: NO
     CLANG_ENABLE_MODULES: YES
+  configs:
+    Debug:
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+      DEBUG_INFORMATION_FORMAT: dwarf
 targets:
   iDom:
     type: application
@@ -23,8 +30,8 @@ targets:
         PRODUCT_NAME: "$(TARGET_NAME)"
         MACH_O_TYPE: mh_execute
         PRODUCT_BUNDLE_IDENTIFIER: it.domenicolella.iDom
-        MARKETING_VERSION: 0.2.1
-        CURRENT_PROJECT_VERSION: 3
+        MARKETING_VERSION: 0.3.0
+        CURRENT_PROJECT_VERSION: 4
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: iDom
         INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "iDom usa la tua posizione solo quando scegli di salvare dove hai parcheggiato."
@@ -33,4 +40,20 @@ targets:
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         TARGETED_DEVICE_FAMILY: 1
     scheme:
-      testTargets: []
+      testTargets:
+        - iDomUITests
+  iDomUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/UI
+    dependencies:
+      - target: iDom
+    settings:
+      base:
+        PRODUCT_NAME: "$(TARGET_NAME)"
+        PRODUCT_BUNDLE_IDENTIFIER: it.domenicolella.iDomUITests
+        MACH_O_TYPE: mh_bundle
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: iDom
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @loader_path/Frameworks"

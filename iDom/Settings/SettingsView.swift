@@ -6,9 +6,9 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section("iDom") {
-                LabeledContent("Versione", value: "0.2.1")
-                LabeledContent("Build", value: "3")
-                LabeledContent("Moduli", value: "5")
+                LabeledContent("Versione", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—")
+                LabeledContent("Build", value: Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "—")
+                LabeledContent("Strumenti completi", value: "4")
             }
 
             Section("Esperienza") {
@@ -19,6 +19,16 @@ struct SettingsView: View {
                 Label("Quick Copy", systemImage: "doc.on.doc.fill")
                 Label("Parcheggio", systemImage: "car.fill")
                 Label("Scadenze", systemImage: "calendar.badge.clock")
+                Label("Spend", systemImage: "eurosign.circle")
+            }
+
+            Section("Beta") {
+                Label("Messaggi WhatsApp · solo programmazione", systemImage: "message")
+            }
+
+            Section("Dati") {
+                Text("Testi, spese, scadenze e parcheggio sono salvati su questo iPhone. Nessuna sincronizzazione tra dispositivi. Eliminando l’app vengono eliminati anche i dati locali.")
+                    .font(.footnote).foregroundStyle(.secondary)
             }
 
             Section("In sviluppo") {

@@ -10,11 +10,14 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install XcodeGen
         run: brew install xcodegen
+      - name: Check personal data and migrations
+        run: sh Tests/run-core-checks.sh
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build for iOS Simulator
@@ -25,5 +28,27 @@ jobs:
             -scheme iDom \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath /tmp/idom-ci \
             CODE_SIGNING_ALLOWED=NO \
             build
+      - name: Test personal tools on iPhone Simulator
+        run: |
+          set -o pipefail
+          SIMULATOR_ID=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for group in d["devices"].values() for x in group if x.get("isAvailable") and x["name"].startswith("iPhone")))')
+          xcodebuild \
+            -project iDom.xcodeproj \
+            -scheme iDom \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
+            -derivedDataPath /tmp/idom-ci \
+            -resultBundlePath /tmp/idom-ui.xcresult \
+            -parallel-testing-enabled NO \
+            CODE_SIGNING_ALLOWED=NO \
+            test
+      - name: Save UI test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iDom-UI-results
+          path: /tmp/idom-ui.xcresult
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,101 +1,126 @@
 # iDom
 
-iDom è un hub personale nativo per iPhone, costruito in SwiftUI con un'interfaccia pulita e coerente con iOS.
+iDom è un hub personale nativo per iPhone, scritto in SwiftUI. I dati dei quattro strumenti personali sono salvati sul dispositivo; non serve un account o un server.
 
 ## Versione corrente
-**0.2.1 — build 3**
+**0.3.0 — build 4**
 
-### Stato della 0.2.1
-PC Remote e Rete sono presenti ma non ancora completi. Quick Copy, Parcheggio, Scadenze e Spend sono disponibili; Messaggi WhatsApp è in beta.
+## Strumenti personali
 
-### Funzioni disponibili
-- Quick Copy: salva testi riutilizzabili e copiali con un tap.
-- Parcheggio: salva la posizione dell'auto e torna al punto tramite Apple Maps.
-- Scadenze: aggiungi date importanti e visualizza i giorni mancanti.
-- Spend: registra rapidamente spese, importi e categorie.
-- Navigazione Home / Tools / Impostazioni.
+### Quick Copy
+- Aggiungi testi con nome, anche su più righe e con caratteri speciali.
+- Cerca nel nome e nel contenuto; tocca un elemento per copiarlo con conferma visiva.
+- Scorri a sinistra per modificare o eliminare; tieni premuto per modificare, condividere o eliminare.
+- Le eliminazioni richiedono conferma. Il feedback aptico rispetta l'interruttore in Impostazioni.
+- I testi della versione 0.2.1 vengono migrati una sola volta in JSON, con identificatori stabili. Il vecchio archivio rimane come backup; non vengono aggiunti dati di esempio ai nuovi utenti.
 
-### Messaggi WhatsApp programmati — Beta
-Permette di scegliere destinatario, testo, giorno e ora e salvare la programmazione. L'invio automatico richiederà un backend sicuro e un provider/API WhatsApp autorizzato.
+### Parcheggio
+- Salva la posizione corrente dopo il consenso alla localizzazione.
+- Visualizza il punto sulla mappa, data/ora del salvataggio e precisione indicativa.
+- Aggiungi una nota (piano, posto, riferimento), salvata automaticamente.
+- Apri le indicazioni a piedi in Apple Maps.
+- Aggiorna o rimuovi il parcheggio con conferma. Un tentativo GPS fallito non sovrascrive la posizione precedente; l'aggiornamento conserva la nota.
+- La ricerca si arresta dopo 20 secondi o uscendo dalla schermata. Vengono accettate posizioni recenti con precisione entro 100 metri; con posizione approssimativa o al chiuso può essere necessario riprovare e abilitare Posizione esatta.
+- Nessun rilevamento continuo o in background. Mappe e indicazioni dipendono dalla disponibilità dei servizi Apple e della connessione.
 
-## Stato moduli
+### Scadenze
+- Aggiungi e modifica titolo e data, cerca nell'elenco, completa e riapri una scadenza.
+- Filtri Da fare/Completate e indicazioni Oggi, Domani, Scaduta o giorni mancanti.
+- Attiva Ricordami e scegli data e ora della notifica locale, indipendenti dalla data della scadenza. La richiesta del permesso compare solo quando salvi un promemoria.
+- Senza permesso puoi salvare disattivando Ricordami; il modulo mostra anche il collegamento alle impostazioni delle notifiche.
+- Modifica, completamento ed eliminazione aggiornano o cancellano il relativo promemoria. Riaprendo una scadenza, un promemoria ancora futuro viene riprogrammato; se è passato, modificalo per riceverne uno nuovo.
+- Vengono programmati i prossimi 60 promemoria al massimo, rispettando lo spazio disponibile per le notifiche dell'app. Se ce ne sono altri, un avviso invita a riaprire iDom periodicamente: la coda viene aggiornata all'apertura e al ritorno in primo piano.
+- La notifica può arrivare con l'app chiusa. La presentazione dipende dalle impostazioni iOS (permessi, Full immersion, riepiloghi). Toccandola si apre iDom; entra in Scadenze per gestire l'elemento.
+
+### Spend
+- Aggiungi, modifica ed elimina spese con descrizione, importo in euro, categoria e data.
+- Importi positivi fino a 999.999.999,99 €, con virgola o punto e massimo due decimali; niente separatori delle migliaia. Input non validi non vengono salvati.
+- Totale del mese selezionato oppure di tutto lo storico, filtro categoria e riepilogo per categoria. I totali seguono i filtri e sono calcolati in centesimi.
+- Usa le frecce per cambiare mese; tocca un movimento per modificarlo e scorri a sinistra per eliminarlo con conferma.
+- I vecchi importi fuori limite restano salvati e modificabili, ma sono segnalati come Da correggere ed esclusi dai totali.
+- Spese e scadenze salvate nella 0.2.1 rimangono leggibili senza perdere identificatori o date.
+
+## Altri moduli
 | Modulo | Stato |
 | --- | --- |
-| Quick Copy | ✅ Disponibile |
-| Parcheggio | ✅ Disponibile |
-| Scadenze | ✅ Disponibile |
-| Spend | ✅ Disponibile |
-| Messaggi WhatsApp | 🧪 Beta |
-| PC Remote | 🚧 In sviluppo / non completo |
-| Rete | 🚧 In sviluppo / non completo |
+| Messaggi WhatsApp | Beta: salva solo la programmazione, senza invio automatico né promemoria WhatsApp |
+| PC Remote | In sviluppo |
+| Rete | In sviluppo |
 
-## Compatibilità sviluppo
-- Deployment target: iOS 17+
-- `project.yml` è la fonte di verità: il progetto `iDom.xcodeproj` viene generato localmente e non è versionato.
-- `xcodeVersion: 15.4` e `objectVersion: 60` esprimono la configurazione storica; XcodeGen 2.46.0 installato localmente genera comunque `objectVersion: 77`. La compatibilità con Xcode 15.4 non è quindi garantita.
-- Per iPhone con versioni iOS più recenti può essere necessario un Xcode più recente per l'esecuzione su dispositivo reale.
+Questi tre moduli non sono stati estesi nella 0.3.0. L'invio WhatsApp automatico richiederà un backend e un provider/API autorizzato.
 
-## Roadmap
-- Backend sicuro per Messaggi e integrazione API WhatsApp.
-- Notifiche e gestione più completa dei messaggi programmati.
-- Completamento progressivo di PC Remote e Rete.
-- Nuovi strumenti personali e rifinitura UX.
+## Dati e compatibilità
+- iOS 17 o successivo; interfaccia per iPhone.
+- Salvataggi locali in UserDefaults: nessuna sincronizzazione tra dispositivi o esportazione/backup completo integrato. Eliminare l'app elimina anche i dati locali.
+- Se un archivio di testi, spese o scadenze non è leggibile, iDom mostra l'errore e blocca le modifiche a quell'archivio, conservando gli originali.
+- Le chiavi esistenti di spese, scadenze e parcheggio restano in uso. I nuovi campi delle scadenze sono opzionali per compatibilità con i dati precedenti.
 
-## Regola di progetto
-Il README deve essere aggiornato insieme alle modifiche funzionali o di configurazione del progetto, in modo che descriva sempre lo stato reale di iDom.
+## Sviluppo e avvio
+Requisiti: Xcode con piattaforma iOS e un simulatore installato, XcodeGen.
 
-## Requisiti
-- iOS 17+
-- Xcode
-- XcodeGen
-
-## Avvio
 ```bash
 git pull
 xcodegen generate
 open iDom.xcodeproj
 ```
 
-Scegli un simulatore compatibile e avvia l'app. Per un iPhone fisico, seleziona anche il tuo team personale in Signing & Capabilities.
+`project.yml` è la fonte di verità. `iDom.xcodeproj` viene generato localmente e non è versionato. Dopo aver rigenerato, riaprilo in Xcode.
 
-## Correzione build Xcode 26.3
-L'errore `Multiple commands produce .../Debug-iphonesimulator/.app` e il warning
-`duplicate output file` erano causati dal nome prodotto mancante nel progetto
-generato, non da sorgenti Swift duplicati. La creazione della cartella app e
-l'output del comando `CreateUniversalBinary` puntavano entrambi a `.app`.
+Per il simulatore scegli un iPhone simulato e premi ⌘R. Per l'iPhone fisico collega e sblocca il telefono, abilita Modalità sviluppatore e scegli il tuo team con firma automatica.
 
-L'installazione locale di XcodeGen 2.46.0 segnalava `No "base" settings found`
-(e analoghi messaggi per debug, release e iOS). Per non dipendere dai preset
-mancanti, `project.yml` usa `settingPresets: none` e dichiara esplicitamente
-`PRODUCT_NAME: "$(TARGET_NAME)"`, `MACH_O_TYPE: mh_execute`,
-`CLANG_ENABLE_MODULES: YES` e `ALWAYS_SEARCH_USER_PATHS: NO`.
-Quest'ultima impostazione elimina anche il warning sugli headermap tradizionali.
-La scansione dei sorgenti resta unica (`sources: iDom`); non aggiungere gli stessi
-file anche come percorsi separati.
+### Firma locale persistente
+`project.local.yml` è incluso facoltativamente e ignorato da Git. Puoi conservare lì il team personale per non perderlo alla rigenerazione:
 
-Dopo modifiche a `project.yml`, rigenera il progetto con `xcodegen generate`
-e riaprilo in Xcode. Le modifiche di configurazione vanno fatte nel file YAML,
-perché la rigenerazione sovrascrive le impostazioni del progetto generato.
-Per il simulatore non serve selezionare un team di firma.
-
-### Verifica da terminale
-```bash
-xcodegen generate
-xcodebuild \
-  -project iDom.xcodeproj \
-  -scheme iDom \
-  -sdk iphonesimulator \
-  -destination 'generic/platform=iOS Simulator' \
-  -derivedDataPath /tmp/iDom-DerivedData \
-  CODE_SIGNING_ALLOWED=NO \
-  build
+```yaml
+settings:
+  base:
+    DEVELOPMENT_TEAM: IL_TUO_TEAM_ID
+    CODE_SIGN_STYLE: Automatic
 ```
-La stessa build per simulatore viene eseguita dal workflow GitHub Actions
-su push e pull request verso `main`.
 
-Verifica locale completata il 5 settembre 2026: **BUILD SUCCEEDED** con
-Xcode 26.3 (17C529), SDK iOS Simulator 26.2, configurazione Debug, architetture
-arm64 e x86_64. Nessuna modifica ai sorgenti Swift necessaria. Rimane soltanto
-il warning non bloccante `Metadata extraction skipped. No AppIntents.framework
-dependency found.`, perché il progetto non integra AppIntents. Questa verifica
-riguarda la compilazione; non è un test delle funzionalità o su iPhone fisico.
+Non inserire certificati o credenziali. La configurazione locale esistente del team è stata conservata durante questo aggiornamento. La build per simulatore non richiede un team.
+
+### Configurazione XcodeGen
+L'installazione locale di XcodeGen 2.46.0 non trovava i preset (`No "base" settings found`). `settingPresets: none` e le impostazioni esplicite del prodotto evitano la precedente collisione `Multiple commands produce .../.app`: `PRODUCT_NAME` è il nome del target e `MACH_O_TYPE` è `mh_execute`. `ALWAYS_SEARCH_USER_PATHS: NO` elimina il warning sugli headermap tradizionali.
+
+La configurazione Debug usa `-Onone` e simboli di debug per consentire l'ispezione dei sorgenti. Le indicazioni storiche `xcodeVersion: 15.4` e `objectVersion: 60` non garantiscono un progetto apribile con Xcode 15.4: XcodeGen 2.46.0 locale genera il formato 77. Lo sviluppo corrente è verificato con Xcode 26.3.
+
+Se Xcode mostra una sessione sospesa e l'app sembra ferma, interrompi con ■ e prova l'avvio dall'icona sul telefono. Un eventuale `SIGKILL` va diagnosticato dai log: da solo non identifica la causa.
+
+## Verifiche
+Controlli di migrazione, persistenza, validazione importi, totali, filtri e pianificazione dei promemoria, con dati temporanei separati da quelli dell'app:
+
+```bash
+sh Tests/run-core-checks.sh
+```
+
+Build per entrambe le architetture del simulatore:
+
+```bash
+xcodebuild -project iDom.xcodeproj -scheme iDom \
+  -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath /tmp/iDom-DerivedData CODE_SIGNING_ALLOWED=NO build
+```
+
+Test delle schermate (scegli un simulatore iPhone disponibile in `xcrun simctl list devices available`):
+
+```bash
+xcodebuild -project iDom.xcodeproj -scheme iDom \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO test
+```
+
+Il workflow GitHub Actions esegue i controlli sui dati, la build e i test delle schermate su un simulatore iPhone disponibile. Conserva il risultato dei test per 7 giorni.
+
+I test delle schermate aggiungono elementi con nomi univoci e li eliminano al termine. Usare un simulatore di test, non il proprio iPhone.
+
+Prima dell'uso quotidiano sul telefono, verificare il GPS all'aperto, il passaggio ad Apple Maps e una notifica a schermo bloccato con le proprie impostazioni iOS. La compilazione e il simulatore non sostituiscono questi controlli hardware.
+
+## Esito verifiche 0.3.0
+- 36 controlli sui dati superati.
+- Build per iOS Simulator riuscita; build firmata per iPhone riuscita con Xcode 26.3.
+- Bundle dei test UI compilato correttamente. Sul Mac locale il servizio del simulatore non ha avviato i test; la verifica UI viene eseguita anche dal workflow GitHub.
+- GPS reale, indicazioni e ricezione delle notifiche a telefono bloccato richiedono la prova sul dispositivo.
+
+## Regola permanente di progetto
+Ogni modifica funzionale o di configurazione deve aggiornare questo README, includendo comportamento, migrazioni, limiti e verifiche effettivamente eseguite.
