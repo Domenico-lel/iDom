@@ -1,5 +1,6 @@
 name: iDom
 options:
+  settingPresets: none
   bundleIdPrefix: it.domenicolella
   deploymentTarget:
     iOS: "17.0"
@@ -9,6 +10,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: 5.0
+    ALWAYS_SEARCH_USER_PATHS: NO
+    CLANG_ENABLE_MODULES: YES
 targets:
   iDom:
     type: application
@@ -17,6 +20,8 @@ targets:
       - path: iDom
     settings:
       base:
+        PRODUCT_NAME: "$(TARGET_NAME)"
+        MACH_O_TYPE: mh_execute
         PRODUCT_BUNDLE_IDENTIFIER: it.domenicolella.iDom
         MARKETING_VERSION: 0.2.1
         CURRENT_PROJECT_VERSION: 3

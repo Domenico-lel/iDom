@@ -31,7 +31,8 @@ Permette di scegliere destinatario, testo, giorno e ora e salvare la programmazi
 
 ## Compatibilità sviluppo
 - Deployment target: iOS 17+
-- Il progetto XcodeGen è configurato con `xcodeVersion: 15.4` e `objectVersion: 60` per consentire la generazione di un `.xcodeproj` compatibile con Xcode 15.4.
+- `project.yml` è la fonte di verità: il progetto `iDom.xcodeproj` viene generato localmente e non è versionato.
+- `xcodeVersion: 15.4` e `objectVersion: 60` esprimono la configurazione storica; XcodeGen 2.46.0 installato localmente genera comunque `objectVersion: 77`. La compatibilità con Xcode 15.4 non è quindi garantita.
 - Per iPhone con versioni iOS più recenti può essere necessario un Xcode più recente per l'esecuzione su dispositivo reale.
 
 ## Roadmap
@@ -51,9 +52,50 @@ Il README deve essere aggiornato insieme alle modifiche funzionali o di configur
 ## Avvio
 ```bash
 git pull
-rm -rf iDom.xcodeproj
 xcodegen generate
 open iDom.xcodeproj
 ```
 
-Seleziona il tuo team personale in Signing & Capabilities, scegli un simulatore compatibile oppure collega l'iPhone e avvia l'app.
+Scegli un simulatore compatibile e avvia l'app. Per un iPhone fisico, seleziona anche il tuo team personale in Signing & Capabilities.
+
+## Correzione build Xcode 26.3
+L'errore `Multiple commands produce .../Debug-iphonesimulator/.app` e il warning
+`duplicate output file` erano causati dal nome prodotto mancante nel progetto
+generato, non da sorgenti Swift duplicati. La creazione della cartella app e
+l'output del comando `CreateUniversalBinary` puntavano entrambi a `.app`.
+
+L'installazione locale di XcodeGen 2.46.0 segnalava `No "base" settings found`
+(e analoghi messaggi per debug, release e iOS). Per non dipendere dai preset
+mancanti, `project.yml` usa `settingPresets: none` e dichiara esplicitamente
+`PRODUCT_NAME: "$(TARGET_NAME)"`, `MACH_O_TYPE: mh_execute`,
+`CLANG_ENABLE_MODULES: YES` e `ALWAYS_SEARCH_USER_PATHS: NO`.
+Quest'ultima impostazione elimina anche il warning sugli headermap tradizionali.
+La scansione dei sorgenti resta unica (`sources: iDom`); non aggiungere gli stessi
+file anche come percorsi separati.
+
+Dopo modifiche a `project.yml`, rigenera il progetto con `xcodegen generate`
+e riaprilo in Xcode. Le modifiche di configurazione vanno fatte nel file YAML,
+perché la rigenerazione sovrascrive le impostazioni del progetto generato.
+Per il simulatore non serve selezionare un team di firma.
+
+### Verifica da terminale
+```bash
+xcodegen generate
+xcodebuild \
+  -project iDom.xcodeproj \
+  -scheme iDom \
+  -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath /tmp/iDom-DerivedData \
+  CODE_SIGNING_ALLOWED=NO \
+  build
+```
+La stessa build per simulatore viene eseguita dal workflow GitHub Actions
+su push e pull request verso `main`.
+
+Verifica locale completata il 5 settembre 2026: **BUILD SUCCEEDED** con
+Xcode 26.3 (17C529), SDK iOS Simulator 26.2, configurazione Debug, architetture
+arm64 e x86_64. Nessuna modifica ai sorgenti Swift necessaria. Rimane soltanto
+il warning non bloccante `Metadata extraction skipped. No AppIntents.framework
+dependency found.`, perché il progetto non integra AppIntents. Questa verifica
+riguarda la compilazione; non è un test delle funzionalità o su iPhone fisico.
