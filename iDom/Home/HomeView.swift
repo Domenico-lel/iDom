@@ -21,9 +21,7 @@ struct HomeView: View {
                 }
 
                 HStack(spacing: 12) {
-                    Image(systemName: "sparkles")
-                        .font(.title2)
-                        .foregroundStyle(.blue)
+                    Image(systemName: "sparkles").font(.title2).foregroundStyle(.blue)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("iDom è pronto").font(.headline)
                         Text("Il tuo centro di controllo personale").font(.caption).foregroundStyle(.secondary)
@@ -38,56 +36,42 @@ struct HomeView: View {
                     Text("I tuoi strumenti").font(.title2.bold())
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(ModuleCatalog.modules) { module in
-                            NavigationLink(value: module) { ModuleCard(module: module) }
-                                .buttonStyle(.plain)
+                            NavigationLink(value: module) { ModuleCard(module: module) }.buttonStyle(.plain)
                         }
                     }
                 }
-            }
-            .padding()
+            }.padding()
         }
         .background(Color(uiColor: .systemGroupedBackground))
         .navigationTitle("iDom")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: iDomModule.self) { module in
-            ModuleDestinationView(module: module)
-        }
+        .navigationDestination(for: iDomModule.self) { ModuleDestinationView(module: $0) }
     }
 }
 
 private struct ModuleCard: View {
     let module: iDomModule
-
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Image(systemName: module.symbol)
-                .font(.title2.weight(.semibold))
-                .foregroundStyle(module.tint)
-                .frame(width: 44, height: 44)
-                .background(module.tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            Image(systemName: module.symbol).font(.title2.weight(.semibold)).foregroundStyle(module.tint).frame(width: 44, height: 44).background(module.tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             Spacer(minLength: 4)
             Text(module.title).font(.headline).foregroundStyle(.primary)
             Text(module.subtitle).font(.caption).foregroundStyle(.secondary).lineLimit(2)
         }
-        .frame(maxWidth: .infinity, minHeight: 145, alignment: .leading)
-        .padding(16)
+        .frame(maxWidth: .infinity, minHeight: 145, alignment: .leading).padding(16)
         .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
     }
 }
 
 struct ModuleDestinationView: View {
     let module: iDomModule
-
     @ViewBuilder var body: some View {
-        if module.id == "copy" {
-            QuickCopyView()
-        } else {
-            ContentUnavailableView {
-                Label(module.title, systemImage: module.symbol)
-            } description: {
-                Text("Modulo in arrivo.")
-            }
-            .navigationTitle(module.title)
+        switch module.id {
+        case "copy": QuickCopyView()
+        case "parking": ParkingView()
+        case "deadlines": DeadlinesView()
+        default:
+            ContentUnavailableView { Label(module.title, systemImage: module.symbol) } description: { Text("Modulo in arrivo.") }.navigationTitle(module.title)
         }
     }
 }
