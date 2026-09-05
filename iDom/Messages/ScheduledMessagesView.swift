@@ -88,7 +88,7 @@ struct ScheduledMessagesView: View {
             Button("Rimuovi", role: .destructive) { model.removeConnection() }
             Button("Indietro", role: .cancel) {}
         } message: { Text("I messaggi già programmati continueranno a partire dal PC. Annullali prima se vuoi fermarli. La sessione WhatsApp sul PC resta collegata.") }
-        .storageAlert($model.issue)
+        .storageAlert(Binding(get: { showingSetup ? nil : model.issue }, set: { model.issue = $0 }))
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             while !Task.isCancelled {

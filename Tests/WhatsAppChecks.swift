@@ -54,6 +54,11 @@ struct WhatsAppChecks {
         WhatsAppStub.response = (401, Data("{}".utf8))
         do { _ = try await client.status(endpoint); check(false, "Wrong key rejected") }
         catch { check(error.localizedDescription.contains("Chiave"), "Wrong key explained") }
+        WhatsAppStub.response = (502, Data("Bad Gateway".utf8))
+        do { _ = try await client.status(endpoint); check(false, "Proxy failure explained") }
+        catch { check(error.localizedDescription.contains("47322"), "Proxy failure explains local component destination") }
+        do { _ = try await client.schedule(endpoint, message: request); check(false, "Proxy send failure stays uncertain") }
+        catch { check(!(error is WhatsAppRejected), "Proxy send failure stays uncertain") }
         WhatsAppStub.response = (200, Data("{\"id\":\"job\",\"recipient\":\"393331234567\",\"message\":\"Test\",\"scheduledAt\":1800000000000,\"state\":\"queued\"}".utf8))
         _ = try await client.schedule(endpoint, message: request)
         check(WhatsAppStub.lastRequest?.httpMethod == "POST", "Scheduling requires POST")

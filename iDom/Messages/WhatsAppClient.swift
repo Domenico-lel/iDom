@@ -63,6 +63,9 @@ final class WhatsAppClient {
         }
         guard let http = response as? HTTPURLResponse, data.count <= 32_000_000 else { throw RemoteFailure(message: "Risposta del PC non valida.") }
         if http.statusCode == 401 { throw RemoteFailure(message: "Chiave errata: usa la chiave del componente WhatsApp, distinta da PC Remote.") }
+        if http.statusCode == 502 && body == nil {
+            throw RemoteFailure(message: "Il collegamento HTTPS risponde, ma il componente WhatsApp sul PC non è raggiungibile (502). Controlla che sia avviato e che Tailscale Serve punti alla porta 47322.")
+        }
         guard (200...299).contains(http.statusCode) else {
             let problem = try? JSONDecoder().decode([String: String].self, from: data)
             let text = problem?["error"] ?? "Operazione non confermata dal PC (\(http.statusCode))."
