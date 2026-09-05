@@ -1,0 +1,2 @@
+// Personal signing is optional and stays outside version control.
+#include? "Signing.local.xcconfig"

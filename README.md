@@ -69,13 +69,11 @@ open iDom.xcodeproj
 Per il simulatore scegli un iPhone simulato e premi ⌘R. Per l'iPhone fisico collega e sblocca il telefono, abilita Modalità sviluppatore e scegli il tuo team con firma automatica.
 
 ### Firma locale persistente
-`project.local.yml` è incluso facoltativamente e ignorato da Git. Puoi conservare lì il team personale per non perderlo alla rigenerazione:
+`Config/Signing.xcconfig` include facoltativamente `Config/Signing.local.xcconfig`, ignorato da Git. La generazione funziona anche nelle copie pulite senza configurazione personale. Puoi conservare lì il team personale per non perderlo alla rigenerazione:
 
-```yaml
-settings:
-  base:
-    DEVELOPMENT_TEAM: IL_TUO_TEAM_ID
-    CODE_SIGN_STYLE: Automatic
+```xcconfig
+DEVELOPMENT_TEAM = IL_TUO_TEAM_ID
+CODE_SIGN_STYLE = Automatic
 ```
 
 Non inserire certificati o credenziali. La configurazione locale esistente del team è stata conservata durante questo aggiornamento. La build per simulatore non richiede un team.

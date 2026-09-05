@@ -1,7 +1,7 @@
 name: iDom
-include:
-  - path: project.local.yml
-    optional: true
+configFiles:
+  Debug: Config/Signing.xcconfig
+  Release: Config/Signing.xcconfig
 options:
   settingPresets: none
   bundleIdPrefix: it.domenicolella
