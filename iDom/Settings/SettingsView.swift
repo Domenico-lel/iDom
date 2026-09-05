@@ -6,7 +6,8 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section("iDom") {
-                LabeledContent("Versione", value: "0.2.0")
+                LabeledContent("Versione", value: "0.2.1")
+                LabeledContent("Build", value: "3")
                 LabeledContent("Moduli", value: "5")
             }
 
@@ -14,10 +15,15 @@ struct SettingsView: View {
                 Toggle("Feedback aptico", isOn: $haptics)
             }
 
-            Section("Novità 0.2") {
-                Label("Quick Copy funzionante", systemImage: "doc.on.doc.fill")
-                Label("Parcheggio con posizione e Apple Maps", systemImage: "car.fill")
-                Label("Scadenze salvate sul dispositivo", systemImage: "calendar.badge.clock")
+            Section("Disponibili") {
+                Label("Quick Copy", systemImage: "doc.on.doc.fill")
+                Label("Parcheggio", systemImage: "car.fill")
+                Label("Scadenze", systemImage: "calendar.badge.clock")
+            }
+
+            Section("In sviluppo") {
+                Label("PC Remote — non completo", systemImage: "desktopcomputer")
+                Label("Rete — non completo", systemImage: "wifi")
             }
 
             Section {
@@ -26,13 +32,10 @@ struct SettingsView: View {
                     VStack(spacing: 6) {
                         Image(systemName: "house.and.flag.fill").font(.title2)
                         Text("iDom").font(.headline)
-                        Text("Il tuo spazio personale su iPhone")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        Text("Il tuo spazio personale su iPhone").font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
-                }
-                .listRowBackground(Color.clear)
+                }.listRowBackground(Color.clear)
             }
         }
         .navigationTitle("Impostazioni")
