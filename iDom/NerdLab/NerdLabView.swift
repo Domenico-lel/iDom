@@ -4,15 +4,11 @@ import Network
 import UniformTypeIdentifiers
 
 struct NerdLabView: View {
-    @State private var selection: NerdTool = .dashboard
-
     var body: some View {
         List {
             Section("Laboratorio") {
                 ForEach(NerdTool.allCases) { tool in
-                    Button {
-                        selection = tool
-                    } label: {
+                    NavigationLink(value: tool) {
                         Label {
                             VStack(alignment: .leading) {
                                 Text(tool.title)
@@ -29,12 +25,6 @@ struct NerdLabView: View {
         .navigationTitle("Nerd Lab")
         .navigationDestination(for: NerdTool.self) { tool in
             NerdToolView(tool: tool)
-        }
-        .overlay {
-            NavigationLink(value: selection) { EmptyView() }.opacity(0)
-        }
-        .onAppear {
-            selection = .dashboard
         }
     }
 }
@@ -431,6 +421,17 @@ struct NerdIPAView: View {
             report = text
         } catch {
             report = "Lettura fallita: \(error.localizedDescription)"
+        }
+    }
+}
+
+
+private extension UIDevice {
+    var modelIdentifier: String {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        return withUnsafeBytes(of: &systemInfo.machine) { rawBuffer in
+            rawBuffer.compactMap { $0 == 0 ? nil : Character(UnicodeScalar($0)) }.map(String.init).joined()
         }
     }
 }
