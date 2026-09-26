@@ -94,6 +94,21 @@ La prima esecuzione UI della 0.4.0 ha superato i tre test degli strumenti preced
 
 Prova hardware del 5 settembre 2026: l’utente ha confermato l’accensione del PC dopo Arresta il sistema di Windows, ricevendo un Magic Packet sulla LAN. Hardware: ASUS ROG STRIX B650-A GAMING WIFI e Intel Ethernet Controller I226-V; configurazione e limiti della prova sono documentati in [Companion/README.md](Companion/README.md#prova-hardware-locale). Il Mac è stato usato soltanto come mittente temporaneo. Successivamente l’utente ha installato il componente Windows, attivato Tailscale Serve e confermato che il collegamento a iDom funziona. Restano da verificare lo spegnimento dall’app e l’accensione da rete mobile senza Mac sempre acceso.
 
+## Nerd Lab · novità 0.6.0 (build 10)
+
+Nerd Lab aggiunge un toolbox locale per sviluppo e analisi su iPhone, senza jailbreak e senza accesso al filesystem di sistema:
+
+- Dashboard del laboratorio.
+- Hash SHA-256/SHA-512.
+- Base64 e Hex encode/decode.
+- JSON formatter/validator.
+- HTTP client GET/HEAD con status, tempi, headers e body limitato.
+- Test di connettività TCP verso host/porte specificati.
+- IPA Inspector con importazione da Files, dimensione, SHA-256 e controllo della struttura ZIP/Payload.
+- Device Info e UUID generator.
+
+Le funzioni di rete sono pensate per dispositivi e reti amministrati dall'utente. iOS mantiene il normale sandbox: non viene aggiunta un'esecuzione arbitraria di shell, accesso root o bypass di firma/DRM.
+
 ## Dati e compatibilità
 - iOS 17 o successivo; interfaccia per iPhone.
 - Salvataggi locali in UserDefaults: nessuna sincronizzazione tra dispositivi o esportazione/backup completo integrato. Eliminare l'app elimina anche i dati locali.
