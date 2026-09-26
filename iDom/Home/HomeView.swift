@@ -27,6 +27,7 @@ struct ModuleDestinationView: View {
         case "deadlines": DeadlinesView()
         case "spend": SpendView()
         case "messages": ScheduledMessagesView()
+        case "nerdlab": NerdLabView()
         default: ContentUnavailableView { Label(module.title, systemImage: module.symbol) } description: { Text("Funzione in sviluppo. Non è ancora considerata completa.") }.navigationTitle(module.title)
         }
     }
